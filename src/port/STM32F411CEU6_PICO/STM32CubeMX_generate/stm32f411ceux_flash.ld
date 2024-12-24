@@ -130,6 +130,15 @@ SECTIONS
     PROVIDE_HIDDEN (__fini_array_end = .);
   } >FLASH
 
+  .letter_shell_cmds :
+  {
+    . = ALIGN(4);
+    _shell_command_start = .;
+    KEEP (*(shellCommand))
+    _shell_command_end = .;
+    . = ALIGN(4);
+  } >FLASH
+
   /* used by the startup to initialize data */
   _sidata = LOADADDR(.data);
 

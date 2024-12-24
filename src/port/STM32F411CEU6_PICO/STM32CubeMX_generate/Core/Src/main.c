@@ -18,7 +18,8 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
+#include "FreeRTOS.h"
+#include "task.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -213,7 +214,13 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void vApplicationStackOverflowHook( TaskHandle_t xTask,
+                                        char * pcTaskName )
+    {
+        /* Check pcTaskName for the name of the offending task,
+         * or pxCurrentTCB if pcTaskName has itself been corrupted. */
+        printf("task:%s stack overflow hook\n", pcTaskName);
+    }
 /* USER CODE END 4 */
 
 /**
@@ -227,6 +234,7 @@ void Error_Handler(void)
   __disable_irq();
   while (1)
   {
+    printf("enter STM32 HAL Error_handler\r\n");
   }
   /* USER CODE END Error_Handler_Debug */
 }
