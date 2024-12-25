@@ -18,11 +18,13 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "FreeRTOS.h"
-#include "task.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "FreeRTOS.h"
+#include "task.h"
+#include "led_task.h"
+#include "letter_shell_port.h"
+#include "stdio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -91,6 +93,24 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+  
+  printf("MicroJS build time %s %s\n", __DATE__, __TIME__);
+
+  int ret;
+  ret = start_led_task();
+  if(ret != 0 ){
+    printf("ERROR: start_led_task ret failed :%d\n", ret);
+    Error_Handler();
+  }
+
+  ret = userShellInit();
+  if(ret != 0 ){
+    printf("ERROR: start_letter_shell ret failed :%d\n", ret);
+    Error_Handler();
+  }
+
+
+  vTaskStartScheduler();
 
   /* USER CODE END 2 */
 
@@ -221,6 +241,11 @@ void vApplicationStackOverflowHook( TaskHandle_t xTask,
          * or pxCurrentTCB if pcTaskName has itself been corrupted. */
         printf("task:%s stack overflow hook\n", pcTaskName);
     }
+int _write (int file, const void * ptr, size_t len)
+{
+  HAL_UART_Transmit(&huart1, (uint8_t *)ptr, len, 0xFFFF);
+  return 0;
+}
 /* USER CODE END 4 */
 
 /**

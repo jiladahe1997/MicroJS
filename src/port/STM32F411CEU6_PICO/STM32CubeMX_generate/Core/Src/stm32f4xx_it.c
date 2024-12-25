@@ -24,6 +24,7 @@
 /* USER CODE BEGIN Includes */
 #include "FreeRTOS.h"
 #include "task.h"
+#include "letter_shell_port.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -171,6 +172,7 @@ void DebugMon_Handler(void)
 /**
   * @brief This function handles Pendable request for system service.
   */
+extern void xPortPendSVHandler();
 void PendSV_Handler(void)
 {
   /* USER CODE BEGIN PendSV_IRQn 0 */
@@ -209,9 +211,20 @@ void SysTick_Handler(void)
 void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
+    UART_HandleTypeDef *huart = &huart1;
+    uint32_t isrflags   = READ_REG(huart->Instance->SR);
+    uint32_t cr1its     = READ_REG(huart->Instance->CR1);
+    uint32_t cr3its     = READ_REG(huart->Instance->CR3);
+    uint32_t errorflags = 0x00U;
+    errorflags = (isrflags & (uint32_t)(USART_SR_PE | USART_SR_FE | USART_SR_ORE | USART_SR_NE));
+    if(errorflags != 0){
+        printf("USART1_IRQHandler errorflags: %x\n", errorflags);
+    }
 
+    char data = (char)(huart->Instance->DR & (uint8_t)0x00FF);
+    xStreamBufferSendFromISR(get_letter_shell_stream_buffer(), &data, 1, NULL);
   /* USER CODE END USART1_IRQn 0 */
-  HAL_UART_IRQHandler(&huart1);
+  //HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
 
   /* USER CODE END USART1_IRQn 1 */
