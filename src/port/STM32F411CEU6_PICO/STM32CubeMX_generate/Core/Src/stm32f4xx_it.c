@@ -25,6 +25,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "letter_shell_port.h"
+#include "xmodem_port.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -222,7 +223,13 @@ void USART1_IRQHandler(void)
     }
 
     char data = (char)(huart->Instance->DR & (uint8_t)0x00FF);
-    xStreamBufferSendFromISR(get_letter_shell_stream_buffer(), &data, 1, NULL);
+
+
+    if(get_flag_uart_data_to_xmodem() == true)
+        xStreamBufferSendFromISR(get_xmodem_stream_buffer(), &data, 1, NULL);
+    else 
+        xStreamBufferSendFromISR(get_letter_shell_stream_buffer(), &data, 1, NULL);
+
   /* USER CODE END USART1_IRQn 0 */
   //HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */

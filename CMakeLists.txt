@@ -72,8 +72,10 @@ if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/jerryscript/build/lib)
 endif()
 target_link_directories(MicroJS PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/jerryscript/build/lib)
 
+message(STATUS "INTERFACE_INCLUDE_DIRECTORIES: ${INCLUDE_DIRECTORIES}")
 
-
+#add xmodem
+add_subdirectory(src/xmodem)
 
 # add port
 add_subdirectory(${port_path})
@@ -83,7 +85,7 @@ add_subdirectory(${port_path})
 
 
 # final
-target_link_libraries(MicroJS port freertos_kernel letter_shell jerry-core jerry-ext)
+target_link_libraries(MicroJS port freertos_kernel letter_shell xmodem jerry-core jerry-ext)
 add_custom_command(TARGET MicroJS POST_BUILD
     COMMAND ${CMAKE_OBJCOPY} -O binary MicroJS.elf MicroJS.bin 
 )

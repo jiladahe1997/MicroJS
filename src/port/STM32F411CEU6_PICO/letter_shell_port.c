@@ -7,7 +7,7 @@
 
 Shell shell;
 char shellBuffer[512];
-#define SHELL_TASK_STACK_SIZE 256
+#define SHELL_TASK_STACK_SIZE 512
 static StaticTask_t xTaskBuffer;
 static StackType_t xStack[SHELL_TASK_STACK_SIZE];
 static TaskHandle_t xHandle = NULL;

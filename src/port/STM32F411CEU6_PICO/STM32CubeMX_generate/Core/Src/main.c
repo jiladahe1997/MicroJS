@@ -240,6 +240,7 @@ void vApplicationStackOverflowHook( TaskHandle_t xTask,
         /* Check pcTaskName for the name of the offending task,
          * or pxCurrentTCB if pcTaskName has itself been corrupted. */
         printf("task:%s stack overflow hook\n", pcTaskName);
+        while(1);
     }
 int _write (int file, const void * ptr, size_t len)
 {

@@ -7,6 +7,7 @@ add_library(port INTERFACE)
 target_link_libraries(port INTERFACE stm32cubemx)
 target_sources(port INTERFACE 
     ${CMAKE_CURRENT_SOURCE_DIR}/letter_shell_port.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/xmodem_port.c
     ${CMAKE_CURRENT_SOURCE_DIR}/STM32CubeMX_generate/Core/Src/led_task.c
 )
 
