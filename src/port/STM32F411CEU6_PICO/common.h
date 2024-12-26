@@ -1,0 +1,8 @@
+#ifndef __COMMON_H__
+#define __COMMON_H__
+
+#define FLASH_RESERVE_FOR_JS_FILE_ADDR 0x8060000
+#define FLASH_RESERVE_FOR_JS_FILE_SIZE (128*1024)
+
+
+#endif /* __COMMON_H__ */

@@ -97,11 +97,11 @@ int main(void)
   printf("MicroJS build time %s %s\n", __DATE__, __TIME__);
 
   int ret;
-  ret = start_led_task();
-  if(ret != 0 ){
-    printf("ERROR: start_led_task ret failed :%d\n", ret);
-    Error_Handler();
-  }
+//   ret = start_led_task();
+//   if(ret != 0 ){
+//     printf("ERROR: start_led_task ret failed :%d\n", ret);
+//     Error_Handler();
+//   }
 
   ret = userShellInit();
   if(ret != 0 ){

@@ -4,9 +4,8 @@
 #include "xmodem_port.h"
 #include "xmodem.h"
 #include "stdio.h"
-
-#define FLASH_RESERVE_FOR_JS_FILE_ADDR 0x8060000
-#define FLASH_RESERVE_FOR_JS_FILE_SIZE (128*1024)
+#include "common.h"
+#include "jerryscript_port.h"
 
 static bool flag_uart_data_to_xmodem = false;
 extern UART_HandleTypeDef huart1;
@@ -124,6 +123,9 @@ void shell_command_sendjsfile(int argc, char *argv[])
 
     set_flag_uart_data_to_xmodem(false);
     vStreamBufferDelete(StreamBuffer);
+
+    //create js thread
+    create_js_run_thread();
 }
 
 SHELL_EXPORT_CMD(

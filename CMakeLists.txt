@@ -66,11 +66,12 @@ if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/jerryscript/build/lib)
     "  Please run:\n"
     "    ```\n"
     "    cd src/jerryscript\n"
-    "    python tools/build.py --clean --toolchain=../arm32.cmake -v --linker-flag=\"--specs=nosys.specs\" --compile-flag=\"-mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard\" --mem-heap=32 --jerry-port=OFF --jerry-cmdline=OFF\n"
+    "    python tools/build.py --clean --toolchain=../arm32.cmake -v --linker-flag=\"--specs=nosys.specs\" --compile-flag=\"-mcpu=cortex-m4 -mthumb -mfpu=fpv4-sp-d16 -mfloat-abi=hard\" --mem-heap=32\n"
     "    ```\n"
     )
 endif()
 target_link_directories(MicroJS PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/jerryscript/build/lib)
+target_include_directories(MicroJS PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/jerryscript/jerry-core/include)
 
 message(STATUS "INTERFACE_INCLUDE_DIRECTORIES: ${INCLUDE_DIRECTORIES}")
 
@@ -85,7 +86,7 @@ add_subdirectory(${port_path})
 
 
 # final
-target_link_libraries(MicroJS port freertos_kernel letter_shell xmodem jerry-core jerry-ext)
+target_link_libraries(MicroJS port freertos_kernel letter_shell xmodem jerry-core jerry-ext jerry-port)
 add_custom_command(TARGET MicroJS POST_BUILD
     COMMAND ${CMAKE_OBJCOPY} -O binary MicroJS.elf MicroJS.bin 
 )
